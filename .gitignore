@@ -1,0 +1,3 @@
+# ignore key files
+*.pem
+*.der
