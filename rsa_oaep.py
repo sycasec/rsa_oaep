@@ -46,8 +46,7 @@ def generate_key_pair(
 
 def encrypt_message(public_key: RSA.RsaKey, message: str) -> bytes:
     cipher = PKCS1_OAEP.new(public_key)
-    ciphertext = cipher.encrypt(message.encode("utf-8"))
-    return ciphertext
+    return cipher.encrypt(message.encode("utf-8"))
 
 
 def decrypt_message(private_key: RSA.RsaKey, ciphertext: bytes) -> str:
