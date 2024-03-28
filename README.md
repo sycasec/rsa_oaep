@@ -9,8 +9,10 @@
 - [x] RSA-OAEP encryption
 - [ ] RSA-OAEP decryption
 - [ ] HMAC signing
-- [ ] HMAC verification 
-- [ ] RSA pkcs1v15 signing 
+- [ ] HMAC verification
+- [ ] CMAC signing
+- [ ] CMAC verification
+- [ ] RSA pkcs1v15 signing
 - [ ] RSA pkcs1v15 verification
 - [ ] RSA pss signing
 - [ ] RSA pss verification
@@ -22,6 +24,8 @@
 - [ ] RSA-OAEP decryption
 - [ ] HMAC signing
 - [ ] HMAC verification 
+- [ ] CMAC signing
+- [ ] CMAC verification
 - [ ] RSA pkcs1v15 signing 
 - [ ] RSA pkcs1v15 verification
 - [ ] RSA pss signing

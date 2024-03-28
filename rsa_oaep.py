@@ -6,8 +6,7 @@ from typing import Optional
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Signature import pkcs1_15
-
-# from Crypto.Hash import SHA256, SHA512
+from Crypto.Hash import HMAC, SHA256
 
 
 # --------------------------- functions ----------------------------
@@ -39,7 +38,6 @@ def generate_key_pair(
                 pkcs=pkcs,
             )
     public_key = key.public_key().export_key(format=pb_format)
-    print(type(public_key))
 
     return private_key, public_key
 
@@ -54,8 +52,25 @@ def decrypt_message(private_key: RSA.RsaKey, ciphertext: bytes) -> str:
     return cipher.decrypt(ciphertext).decode("utf-8")
 
 
+def HMAC_sign_message(secret: str, message: bytes) -> str:
+    h = HMAC.new(secret.encode("utf-8"), digestmod=SHA256)
+    h.update(message)
+    return h.hexdigest()
+
+
+def HMAC_verify_message(secret: str, message: bytes, signature: str) -> bool:
+    h = HMAC.new(secret.encode("utf-8"), digestmod=SHA256)
+    h.update(message)
+    try:
+        h.hexverify(signature)
+        return True
+    except ValueError:
+        return False
+
+
 # ----------------------------- helpers ------------------------------
 def keygen_helper(args):
+    # input verification
     if args.pkcs == 8:
         if args.phrase is None:
             print("Passphrase required for PKCS#8")
@@ -67,6 +82,8 @@ def keygen_helper(args):
             exit(1)
     keygen_args = {key: value for key, value in vars(args).items() if key != "command"}
     private_key, public_key = generate_key_pair(**keygen_args)
+
+    # customize output filename / location
     pk_fname = "./private_key"
     pb_fname = "./public_key"
     npk_fname = input("please enter private key filename (default is ./private_key):")
@@ -77,6 +94,7 @@ def keygen_helper(args):
     if npb_fname.strip():
         pb_fname = npb_fname
 
+    # output keys as files
     print("saving keys...")
     with open(f"{pk_fname}.{args.pk_format.lower()}", "wb") as pkf, open(
         f"{pb_fname}.{args.pb_format.lower()}", "wb"
