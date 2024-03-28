@@ -103,14 +103,17 @@ def keygen_helper(args):
         pbf.write(public_key)
 
 
+# ----------------------------- main ------------------------------
 def main():
     parser = gen_parser()
 
     args = parser.parse_args()
     if args.command == "keygen":
         keygen_helper(args)
-        pass
-    pass
+    elif args.command == "encrypt":
+        encrypt_helper(args)
+    elif args.command == "decrypt":
+        decrypt_helper(args)
 
 
 if __name__ == "__main__":
