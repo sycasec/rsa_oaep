@@ -50,6 +50,11 @@ def encrypt_message(public_key: RSA.RsaKey, message: str) -> bytes:
     return ciphertext
 
 
+def decrypt_message(private_key: RSA.RsaKey, ciphertext: bytes) -> str:
+    cipher = PKCS1_OAEP.new(private_key)
+    return cipher.decrypt(ciphertext).decode("utf-8")
+
+
 # ----------------------------- helpers ------------------------------
 def keygen_helper(args):
     if args.pkcs == 8:
