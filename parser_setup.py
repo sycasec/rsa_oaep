@@ -20,13 +20,32 @@ RSA-OAEP encryption and decryption + signing and verification tool
         """,
     )
 
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    subparsers = parser.add_subparsers(dest="command", help="available commands")
 
-    # Subparser for the encrypt command
-    encrypt_parser = subparsers.add_parser("encrypt", help="Encrypt some data")
+    # -------------------------------- encrypt --------------------------------
 
-    # Subparaser for key generation
-    keygen_parser = subparsers.add_parser("keygen", help="Generate RSA-OAEP keys")
+    encrypt_parser = subparsers.add_parser(
+        "encrypt", help="encrypt a message with RSA-OAEP"
+    )
+    encrypt_parser.add_argument(
+        "--pub_key", required=True, help="receiver public key file"
+    )
+    encrypt_parser.add_argument("--msg", required=True, help="message to encrypt")
+
+    # -------------------------------- decrypt --------------------------------
+
+    decrypt_parser = subparsers.add_parser(
+        "decrypt", help="decrypt an RSA-OAEP encrypted message"
+    )
+
+    decrypt_parser.add_argument(
+        "--priv_key", required=True, help="receiver private key"
+    )
+    decrypt_parser.add_argument("--msg", required=True, help="message to decrypt")
+
+    # --------------------------------- keygen ---------------------------------
+
+    keygen_parser = subparsers.add_parser("keygen", help="generate RSA-OAEP keys")
     keygen_parser.add_argument(
         "--pkcs", type=int, choices=[1, 8], required=True, help="PKCS standard (1 or 8)"
     )
@@ -34,18 +53,18 @@ RSA-OAEP encryption and decryption + signing and verification tool
         "--pk_format",
         choices=["PEM", "DER"],
         default="DER",
-        help="Output format for the keys",
+        help="output format for the keys",
     )
 
     keygen_parser.add_argument(
         "--pb_format",
         choices=["PEM", "DER", "OpenSSH"],
         default="PEM",
-        help="Output format for the public key",
+        help="output format for the public key",
     )
 
     keygen_parser.add_argument(
-        "--phrase", help="Passphrase for PKCS#8 key (required if PKCS#8)"
+        "--phrase", help="passphrase for PKCS#8 key (required if PKCS#8)"
     )
     keygen_parser.add_argument(
         "--bits",
