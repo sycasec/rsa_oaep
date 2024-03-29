@@ -84,7 +84,7 @@ def RSA_PSS_verify_message(
         pss.new(public_key).verify(h, signature)
         return True
     except (ValueError, TypeError) as e:
-        print(f"error: {e}")
+        print(f"{e}")
         return False
 
 
@@ -104,7 +104,7 @@ def RSA_SSA_verify_message(
         pkcs1_15.new(public_key).verify(h, signature)
         return True
     except (ValueError, TypeError) as e:
-        print(f"error: {e}")
+        print(f"{e}")
         return False
 
 
@@ -130,7 +130,7 @@ def ECDSA_verify_message(
         verifier.verify(h, signature)
         return True
     except ValueError as e:
-        print(f"error: {e}")
+        print(f"{e}")
         return False
 
 
