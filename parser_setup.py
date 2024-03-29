@@ -59,6 +59,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     sign_parser.add_argument(
         "--cipher_path",
+        metavar="/path/to/ciphertext",
         help="path to the file containing the message to be signed",
     )
 
@@ -98,13 +99,24 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     verify_parser.add_argument(
+        "--cipher_path",
+        metavar="/path/to/ciphertext",
+        help="path to the file containing the signed ciphertext",
+    )
+
+    verify_parser.add_argument(
+        "--ciphertext",
+        help="signed ciphertext in bytes",
+    )
+
+    verify_parser.add_argument(
         "--pub_key",
         help="public key file path for verifying the signature (cannot be used for HMAC)",
     )
 
     verify_parser.add_argument(
         "--secret",
-        help="secret key for HMAC verification (only used for HMAC)",
+        help="secret key string for HMAC verification (only used for HMAC)",
     )
 
     # --------------------------------- keygen ---------------------------------
@@ -145,7 +157,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
             "AES256-GCM",
             "AES128-CBC",
             "AES192-CBC",
-            "AES-256-CBC",
+            "AES256-CBC",
             "DES-EDE3-CBC",
         ],
         default="AES256-CBC",
@@ -155,13 +167,10 @@ RSA-OAEP encryption and decryption + signing and verification tool
     keygen_parser.add_argument(
         "--hash",
         choices=[
-            "SHA1",
-            "SHA224",
             "SHA256",
             "SHA384",
             "SHA512-224",
             "SHA512-256",
-            "SHA3-224",
             "SHA3-256",
             "SHA3-384",
             "SHA3-512",
