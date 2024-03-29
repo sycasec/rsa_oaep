@@ -41,7 +41,13 @@ RSA-OAEP encryption and decryption + signing and verification tool
     decrypt_parser.add_argument(
         "--priv_key", required=True, help="receiver private key"
     )
-    decrypt_parser.add_argument("--msg", required=True, help="message to decrypt")
+    decrypt_parser.add_argument("--msg", help="raw ciphertext bytes to decrypt")
+    decrypt_parser.add_argument("--filepath", help="filepath storing ciphertext")
+
+    # -------------------------------- sign --------------------------------
+    sign_parser = subparsers.add_parser(
+        "sign", help="sign a message with a hash function and a security key"
+    )
 
     # --------------------------------- keygen ---------------------------------
 
