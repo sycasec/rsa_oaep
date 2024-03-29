@@ -103,6 +103,35 @@ def sign_helper(args):
         except Exception as e:
             print(f"{e}")
             exit(1)
+    elif args.scheme == "HMAC":
+        if not args.secret:
+            print("no secret key supplied! exiting.")
+            exit(1)
+        try:
+            if args.cipher_path:
+                with open(args.cipher_path, "rb") as cipher_file:
+                    ciphertext = cipher_file.read()
+            elif args.ciphertext:
+                ciphertext = args.ciphertext.encode().decode("unicode_escape")
+            else:
+                raise Exception("no ciphertext supplied")
+
+            signature = HMAC_sign_message(args.secret, ciphertext)
+
+            default_sig_fname = "./sig.hex"
+            sig_fname = input("enter signature filename (default: ./sig.hex): ")
+            if sig_fname.strip():
+                default_sig_fname = sig_fname
+
+            with open(default_sig_fname, "w") as sig_file:
+                sig_file.write(signature)
+
+        except Exception as e:
+            print(f"{e}")
+            exit(1)
+    else:
+        print("invalid scheme")
+        exit(1)
 
 
 def encrypt_helper(args):
