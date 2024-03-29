@@ -69,7 +69,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     sign_parser.add_argument(
         "--priv_key",
-        help="private key file for signing (cannot be used for HMAC)",
+        help="private key file path for signing (cannot be used for HMAC)",
     )
 
     sign_parser.add_argument(
