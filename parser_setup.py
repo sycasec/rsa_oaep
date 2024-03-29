@@ -24,6 +24,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     # -------------------------------- encrypt --------------------------------
 
+    # TODO: add an argument for file input
     encrypt_parser = subparsers.add_parser(
         "encrypt", help="encrypt a message with RSA-OAEP"
     )
@@ -46,7 +47,64 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     # -------------------------------- sign --------------------------------
     sign_parser = subparsers.add_parser(
-        "sign", help="sign a message with a hash function and a security key"
+        "sign", help="sign a message with a digital signature"
+    )
+
+    sign_parser.add_argument(
+        "--scheme",
+        choices=["ECDSA", "RSA_PSS", "RSA_SSA", "HMAC"],
+        required=True,
+        help="digital signature scheme to be used in signing",
+    )
+
+    sign_parser.add_argument(
+        "--cipher_path",
+        help="path to the file containing the message to be signed",
+    )
+
+    sign_parser.add_argument(
+        "--ciphertext",
+        help="message in bytes to be signed",
+    )
+
+    sign_parser.add_argument(
+        "--priv_key",
+        help="private key file for signing (cannot be used for HMAC)",
+    )
+
+    sign_parser.add_argument(
+        "--secret",
+        help="secret key for HMAC signing (only used for HMAC)",
+    )
+
+    # -------------------------------- verify --------------------------------
+
+    verify_parser = subparsers.add_parser(
+        "verify", help="verify a message with a digital signature"
+    )
+
+    verify_parser.add_argument(
+        "--scheme",
+        choices=["ECDSA", "RSA_PSS", "RSA_SSA", "HMAC"],
+        required=True,
+        help="digital signature scheme to be used in verification",
+    )
+
+    verify_parser.add_argument("--signature", help="signature to be verified")
+
+    verify_parser.add_argument(
+        "--signature_path",
+        help="path to the file containing the signature to be verified",
+    )
+
+    verify_parser.add_argument(
+        "--pub_key",
+        help="public key file path for verifying the signature (cannot be used for HMAC)",
+    )
+
+    verify_parser.add_argument(
+        "--secret",
+        help="secret key for HMAC verification (only used for HMAC)",
     )
 
     # --------------------------------- keygen ---------------------------------
