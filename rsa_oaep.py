@@ -134,6 +134,114 @@ def sign_helper(args):
         exit(1)
 
 
+def verify_helper(args):
+    if args.cipher_path and args.ciphertext:
+        print("cannot supply both ciphertext and a filepath")
+        exit(1)
+
+    if args.signature_path and args.signature:
+        print("cannot supply both signature and a filepath")
+        exit(1)
+
+    try:
+        if args.scheme != "HMAC":
+            if not args.pub_key:
+                print("no public key supplied! exiting.")
+                exit(1)
+
+            if args.scheme.startswith("RSA"):
+                pub_key = RSA.import_key(open(args.pub_key).read())
+                if args.cipher_path:
+                    with open(args.cipher_path, "rb") as cipher_file:
+                        ciphertext = cipher_file.read()
+                elif args.ciphertext:
+                    ciphertext = args.ciphertext.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no ciphertext supplied")
+
+                if args.signature_path:
+                    with open(args.signature_path, "rb") as sig_file:
+                        signature = sig_file.read()
+                elif args.signature:
+                    signature = args.signature.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no signature supplied")
+                try:
+                    if args.scheme == "RSA_PSS":
+                        verified = RSA_PSS_verify_message(
+                            pub_key, ciphertext, signature
+                        )
+                    elif args.scheme == "RSA_SSA":
+                        verified = RSA_SSA_verify_message(
+                            pub_key, ciphertext, signature
+                        )
+                    else:
+                        raise Exception("invalid scheme? line 179")
+
+                    print(f"signature is authentic: {verified}")
+
+                except ValueError as e:
+                    print(f"signature is not authentic: {e}")
+                    exit(1)
+
+            elif args.scheme == "ECDSA":
+                pub_key = ECC.import_key(open(args.pub_key).read())
+                if args.cipher_path:
+                    with open(args.cipher_path, "rb") as cipher_file:
+                        ciphertext = cipher_file.read()
+                elif args.ciphertext:
+                    ciphertext = args.ciphertext.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no ciphertext supplied")
+
+                if args.signature_path:
+                    with open(args.signature_path, "rb") as sig_file:
+                        signature = sig_file.read()
+                elif args.signature:
+                    signature = args.signature.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no signature supplied")
+                try:
+                    verified = ECDSA_verify_message(pub_key, ciphertext, signature)
+                    print(f"signature is authentic: {verified}")
+                except ValueError as e:
+                    print(f"signature is not authentic: {e}")
+                    exit(1)
+            else:
+                print("invalid scheme ? line 211")
+                exit(1)
+        elif args.scheme == "HMAC":
+            if not args.secret:
+                print("no secret key supplied! exiting.")
+                exit(1)
+            try:
+                if args.cipher_path:
+                    with open(args.cipher_path, "rb") as cipher_file:
+                        ciphertext = cipher_file.read()
+                elif args.ciphertext:
+                    ciphertext = args.ciphertext.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no ciphertext supplied")
+
+                if args.signature_path:
+                    with open(args.signature_path, "r") as sig_file:
+                        signature = sig_file.read()
+                elif args.signature:
+                    signature = args.signature
+                else:
+                    raise Exception("no signature supplied")
+
+                verified = HMAC_verify_message(args.secret, ciphertext, signature)
+                print(f"signature is authentic: {verified}")
+            except Exception as e:
+                print(f"{e}")
+                exit(1)
+
+    except Exception as e:
+        print(f"{e}")
+        exit(1)
+
+
 def encrypt_helper(args):
     try:
         pub_key = RSA.import_key(open(args.pub_key).read())
@@ -188,7 +296,10 @@ def main():
         encrypt_helper(args)
     elif args.command == "decrypt":
         decrypt_helper(args)
-        pass
+    elif args.command == "sign":
+        sign_helper(args)
+    elif args.command == "verify":
+        verify_helper(args)
 
 
 if __name__ == "__main__":
