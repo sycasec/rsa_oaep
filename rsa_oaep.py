@@ -103,6 +103,44 @@ def keygen_helper(args):
         pbf.write(public_key)
 
 
+def encrypt_helper(args):
+    try:
+        pub_key = RSA.import_key(open(args.pub_key).read())
+        ciphertext = encrypt_message(pub_key, args.msg)
+        save = input("write ciphertext to file? [Y/n]: ")
+        if save.strip().lower() not in ["n", "no"] or save == "":
+            fname = "cipher_text.bin"
+            n_fname = input("enter file name (default: cipher_text.bin): ")
+            if n_fname.strip():
+                fname = n_fname
+
+            with open(f"{fname}", "wb") as outfile:
+                outfile.write(ciphertext)
+        else:
+            print(ciphertext)
+    except ValueError as e:
+        print(f"{e}")
+
+
+def decrypt_helper(args):
+    try:
+        priv_key = RSA.importKey(open(args.priv_key).read())
+        if args.msg:
+            message = decrypt_message(priv_key, args.msg)
+        elif args.filepath:
+            with open(args.filepath, "rb") as ciphertext_file:
+                ciphertext = ciphertext_file.read()
+
+            message = decrypt_message(priv_key, ciphertext)
+        else:
+            print("no ciphertext supplied")
+            exit(1)
+
+        print(message)
+    except ValueError as e:
+        print(f"{e}")
+
+
 # ----------------------------- main ------------------------------
 def main():
     parser = gen_parser()
@@ -114,6 +152,7 @@ def main():
         encrypt_helper(args)
     elif args.command == "decrypt":
         decrypt_helper(args)
+        pass
 
 
 if __name__ == "__main__":
