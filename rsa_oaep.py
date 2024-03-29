@@ -74,10 +74,30 @@ def decrypt_message(private_key: RSA.RsaKey, ciphertext: bytes) -> str:
 
 def RSA_PSS_sign_message(private_key: RSA.RsaKey, ciphertext: bytes) -> bytes:
     h = SHA256.new(ciphertext)
-    return pkcs1_15.new(private_key).sign(h)
+    return pss.new(private_key).sign(h)
 
 
 def RSA_PSS_verify_message(
+    public_key: RSA.RsaKey, ciphertext: bytes, signature: bytes
+) -> bool:
+    h = SHA256.new(ciphertext)
+    try:
+        pss.new(public_key).verify(h, signature)
+        return True
+    except (ValueError, TypeError) as e:
+        print(f"error: {e}")
+        return False
+
+
+def RSA_SSA_sign_message(
+    private_key: RSA.RsaKey,
+    ciphertext: bytes,
+) -> bytes:
+    h = SHA256.new(ciphertext)
+    return pkcs1_15.new(private_key).sign(h)
+
+
+def RSA_SSA_verify_message(
     public_key: RSA.RsaKey, ciphertext: bytes, signature: bytes
 ) -> bool:
     h = SHA256.new(ciphertext)
