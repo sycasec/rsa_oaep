@@ -7,27 +7,27 @@
 ## Functions roadmap
 - [x] RSA key generation
 - [x] RSA-OAEP encryption
-- [ ] RSA-OAEP decryption
-- [ ] HMAC signing
-- [ ] HMAC verification
-- [ ] CMAC signing
-- [ ] CMAC verification
-- [ ] RSA pkcs1v15 signing
-- [ ] RSA pkcs1v15 verification
-- [ ] RSA pss signing
-- [ ] RSA pss verification
+- [x] RSA-OAEP decryption
+- [x] HMAC signing
+- [x] HMAC verification
+- [!] CMAC signing       ! discontinued
+- [!] CMAC verification  ! discontinued
+- [x] RSA pkcs1v15 signing
+- [x] RSA pkcs1v15 verification
+- [x] RSA pss signing
+- [x] RSA pss verification
 - [ ] RSA-OAEP encrypt then sign -> verify then decrypt
 
 ## Argparse roadmap
 - [x] RSA key generation
-- [ ] RSA-OAEP encryption
-- [ ] RSA-OAEP decryption
-- [ ] HMAC signing
-- [ ] HMAC verification 
-- [ ] CMAC signing
-- [ ] CMAC verification
-- [ ] RSA pkcs1v15 signing 
-- [ ] RSA pkcs1v15 verification
-- [ ] RSA pss signing
-- [ ] RSA pss verification
+- [x] RSA-OAEP encryption
+- [x] RSA-OAEP decryption
+- [x] HMAC signing
+- [x] HMAC verification 
+- [!] CMAC signing       ! discontinued
+- [!] CMAC verification  ! discontinued
+- [x] RSA pkcs1v15 signing 
+- [x] RSA pkcs1v15 verification
+- [x] RSA pss signing
+- [x] RSA pss verification
 - [ ] RSA-OAEP encrypt then sign -> verify then decrypt
