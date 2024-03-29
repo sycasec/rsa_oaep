@@ -5,7 +5,7 @@ from typing import Optional
 
 from Crypto.PublicKey import RSA, ECC
 from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Signature import DSS
+from Crypto.Signature import DSS, pss, pkcs1_15
 from Crypto.Hash import HMAC, SHA256
 
 
@@ -72,6 +72,23 @@ def decrypt_message(private_key: RSA.RsaKey, ciphertext: bytes) -> str:
     return cipher.decrypt(ciphertext).decode("utf-8")
 
 
+def RSA_PSS_sign_message(private_key: RSA.RsaKey, ciphertext: bytes) -> bytes:
+    h = SHA256.new(ciphertext)
+    return pkcs1_15.new(private_key).sign(h)
+
+
+def RSA_PSS_verify_message(
+    public_key: RSA.RsaKey, ciphertext: bytes, signature: bytes
+) -> bool:
+    h = SHA256.new(ciphertext)
+    try:
+        pkcs1_15.new(public_key).verify(h, signature)
+        return True
+    except (ValueError, TypeError) as e:
+        print(f"error: {e}")
+        return False
+
+
 def ECDSA_sign_message(
     private_key: ECC.EccKey,
     ciphertext: bytes,
@@ -87,8 +104,6 @@ def ECDSA_verify_message(
     public_key: ECC.EccKey,
     ciphertext: bytes,
     signature: bytes,
-    mode: str = "fips-186-3",
-    encoding: str = "der",
 ) -> bool:
     h = SHA256.new(ciphertext)
     verifier = DSS.new(public_key, "fips-186-3")
