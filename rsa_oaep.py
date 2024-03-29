@@ -3,14 +3,14 @@
 from parser_setup import gen_parser
 from typing import Optional
 
-from Crypto.PublicKey import RSA
+from Crypto.PublicKey import RSA, ECC
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import HMAC, SHA256
 
 
 # --------------------------- functions ----------------------------
-def generate_key_pair(
+def generate_rsa_key_pair(
     pk_format: str,
     pb_format: str,
     bits: int = 2048,
@@ -29,7 +29,7 @@ def generate_key_pair(
                 format=pk_format,
                 passphrase=phrase,
                 pkcs=pkcs,
-                protection=f"PKBDF2WithHMAC-{hash}And{cipher}",
+                protection=f"PBKDF2WithHMAC-{hash}And{cipher}",
             )
         else:
             private_key = key.export_key(
@@ -38,6 +38,26 @@ def generate_key_pair(
                 pkcs=pkcs,
             )
     public_key = key.public_key().export_key(format=pb_format)
+
+    return private_key, public_key
+
+
+def generate_ecc_key_pair(
+    pk_format,
+    pb_format,
+    curve: str,
+    phrase: str,
+    cipher: str = "AES256-CBC",
+    hash: str = "SHA512",
+) -> tuple[bytes, bytes]:
+    key = ECC.generate(curve=curve)
+    private_key: bytes = key.export_key(
+        format=pk_format,
+        passphrase=phrase,
+        protection=f"PBKDF2WithHMAC-{hash}And{cipher}",
+    )
+
+    public_key: bytes = key.public_key().export_key(format=pb_format)
 
     return private_key, public_key
 
@@ -81,7 +101,7 @@ def keygen_helper(args):
             print("Cipher and hash are not supported for PEM format")
             exit(1)
     keygen_args = {key: value for key, value in vars(args).items() if key != "command"}
-    private_key, public_key = generate_key_pair(**keygen_args)
+    private_key, public_key = generate_rsa_key_pair(**keygen_args)
 
     # customize output filename / location
     pk_fname = "./private_key"
