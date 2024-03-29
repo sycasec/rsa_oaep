@@ -1,3 +1,4 @@
 # ignore key files
 *.pem
 *.der
+*.bin
