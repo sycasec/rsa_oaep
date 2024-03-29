@@ -55,19 +55,54 @@ def sign_helper(args):
             print("no private key supplied! exiting.")
             exit(1)
         try:
-            priv_key = RSA.import_key(open(args.priv_key).read())
-            if args.msg:
-                signature = RSA_PSS_sign_message(priv_key, args.msg.encode().decode())
-            elif args.filepath:
-                with open(args.filepath, "rb") as message_file:
-                    message = message_file.read()
-                signature = RSA_PSS_sign_message(priv_key, message)
-            else:
-                print("no message supplied")
-                exit(1)
-            print(signature)
-        except ValueError as e:
+            if args.scheme.startswith("RSA"):
+                priv_key = RSA.import_key(open(args.priv_key).read())
+                if args.cipher_path:
+                    with open(args.cipher_path, "rb") as cipher_file:
+                        ciphertext = cipher_file.read()
+                elif args.ciphertext:
+                    ciphertext = args.ciphertext.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no ciphertext supplied")
+
+                if args.scheme == "RSA_PSS":
+                    signature = RSA_PSS_sign_message(priv_key, ciphertext)
+                elif args.scheme == "RSA_SSA":
+                    signature = RSA_SSA_sign_message(priv_key, ciphertext)
+                else:
+                    raise Exception("invalid scheme")
+
+                default_sig_fname = "./sig.bin"
+                sig_fname = input("enter signature filename (default: ./sig.bin): ")
+                if sig_fname.strip():
+                    default_sig_fname = sig_fname
+
+                with open(default_sig_fname, "wb") as sig_file:
+                    sig_file.write(signature)
+
+            elif args.scheme == "ECDSA":
+                key = ECC.import_key(open(args.priv_key).read())
+                if args.cipher_path:
+                    with open(args.cipher_path, "rb") as cipher_file:
+                        ciphertext = cipher_file.read()
+                elif args.ciphertext:
+                    ciphertext = args.ciphertext.encode().decode("unicode_escape")
+                else:
+                    raise Exception("no ciphertext supplied")
+
+                signature = ECDSA_sign_message(key, ciphertext)
+
+                default_sig_fname = "./sig.bin"
+                sig_fname = input("enter signature filename (default: ./sig.bin): ")
+                if sig_fname.strip():
+                    default_sig_fname = sig_fname
+
+                with open(default_sig_fname, "wb") as sig_file:
+                    sig_file.write(signature)
+
+        except Exception as e:
             print(f"{e}")
+            exit(1)
 
 
 def encrypt_helper(args):
@@ -85,7 +120,7 @@ def encrypt_helper(args):
                 outfile.write(ciphertext)
         else:
             print(ciphertext)
-    except ValueError as e:
+    except Exception as e:
         print(f"{e}")
 
 
@@ -96,7 +131,9 @@ def decrypt_helper(args):
     try:
         priv_key = RSA.importKey(open(args.priv_key).read())
         if args.msg:
-            message = decrypt_message(priv_key, args.msg)
+            message = decrypt_message(
+                priv_key, args.msg.encode().decode("unicode_escape")
+            )
         elif args.filepath:
             with open(args.filepath, "rb") as ciphertext_file:
                 ciphertext = ciphertext_file.read()
@@ -107,7 +144,7 @@ def decrypt_helper(args):
             exit(1)
 
         print(message)
-    except ValueError as e:
+    except Exception as e:
         print(f"{e}")
 
 
