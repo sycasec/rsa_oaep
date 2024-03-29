@@ -206,6 +206,9 @@ def encrypt_helper(args):
 
 
 def decrypt_helper(args):
+    if args.msg and args.filepath:
+        print("cannot supply both a message and a file")
+        exit(1)
     try:
         priv_key = RSA.importKey(open(args.priv_key).read())
         if args.msg:
