@@ -26,11 +26,12 @@ def RSA_keygen_helper(args):
         keygen_args = {
             key: value for key, value in vars(args).items() if key != "command"
         }
+        print("generating keys...")
         private_key, public_key = generate_rsa_key_pair(**keygen_args)
 
         # customize output filename / location
-        pk_fname = "./private_key"
-        pb_fname = "./public_key"
+        pk_fname = "./rsa_private_key"
+        pb_fname = "./rsa_public_key"
         npk_fname = input(
             "please enter private key filename (default is ./private_key):"
         )
@@ -59,11 +60,12 @@ def ECC_keygen_helper(args):
         keygen_args = {
             key: value for key, value in vars(args).items() if key != "command"
         }
+        print("generating keys...")
         private_key, public_key = generate_ecc_key_pair(**keygen_args)
 
         # customize output filename / location
-        pk_fname = "./private_key"
-        pb_fname = "./public_key"
+        pk_fname = "./ecc_private_key"
+        pb_fname = "./ecc_public_key"
         npk_fname = input(
             "please enter private key filename (default is ./private_key):"
         )
@@ -332,9 +334,9 @@ def main():
     parser = gen_parser()
 
     args = parser.parse_args()
-    if args.command == "RSA_keygen":
+    if args.command == "rsa_keygen":
         RSA_keygen_helper(args)
-    elif args.command == "ECC_keygen":
+    elif args.command == "ecc_keygen":
         ECC_keygen_helper(args)
     elif args.command == "encrypt":
         encrypt_helper(args)
