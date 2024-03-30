@@ -2,12 +2,8 @@
 
 from parser_setup import gen_parser
 from crypto_functions import *
-from typing import Optional
 
 from Crypto.PublicKey import RSA, ECC
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Signature import DSS, pss, pkcs1_15
-from Crypto.Hash import HMAC, SHA256
 
 
 # ----------------------------- helpers ------------------------------
