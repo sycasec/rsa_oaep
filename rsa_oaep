@@ -314,6 +314,7 @@ def encrypt_helper(args):
             if n_fname.strip():
                 fname = n_fname
 
+            print("saving ciphertext...")
             with open(f"{fname}", "wb") as outfile:
                 outfile.write(ciphertext)
         else:
@@ -347,7 +348,7 @@ def decrypt_helper(args):
             print("no ciphertext supplied")
             exit(1)
 
-        print(message)
+        print(f"decrypted message: {message}")
     except Exception as e:
         print(f"{e}")
 
