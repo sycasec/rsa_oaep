@@ -111,11 +111,9 @@ def RSA_SSA_verify_message(
 def ECDSA_sign_message(
     private_key: ECC.EccKey,
     ciphertext: bytes,
-    mode: str = "fips-186-3",
-    encoding: str = "der",
 ) -> bytes:
     h = SHA256.new(ciphertext)
-    signer = DSS.new(key=private_key, mode=mode, encoding=encoding)
+    signer = DSS.new(key=private_key, mode="fips-186-3")
     return signer.sign(h)
 
 
