@@ -30,12 +30,14 @@ def RSA_keygen_helper(args):
         private_key, public_key = generate_rsa_key_pair(**keygen_args)
 
         # customize output filename / location
-        pk_fname = "./rsa_private_key"
-        pb_fname = "./rsa_public_key"
+        pk_fname = "./keys/rsa_private_key"
+        pb_fname = "./keys/rsa_public_key"
         npk_fname = input(
-            "please enter private key filename (default is ./private_key):"
+            "please enter private key filename (default is ./keys/rsa_private_key):"
         )
-        npb_fname = input("please enter public key filename (default is ./public_key):")
+        npb_fname = input(
+            "please enter public key filename (default is ./keys/rsa_public_key):"
+        )
 
         if npk_fname.strip():
             pk_fname = npk_fname
@@ -49,6 +51,7 @@ def RSA_keygen_helper(args):
         ) as pbf:
             pkf.write(private_key)
             pbf.write(public_key)
+        print("keys saved!")
     except Exception as e:
         print(f"{e}")
         exit(1)
@@ -64,12 +67,14 @@ def ECC_keygen_helper(args):
         private_key, public_key = generate_ecc_key_pair(**keygen_args)
 
         # customize output filename / location
-        pk_fname = "./ecc_private_key"
-        pb_fname = "./ecc_public_key"
+        pk_fname = "./keys/ecc_private_key"
+        pb_fname = "./keys/ecc_public_key"
         npk_fname = input(
-            "please enter private key filename (default is ./private_key):"
+            "please enter private key filename (default is ./keys/ecc_private_key):"
         )
-        npb_fname = input("please enter public key filename (default is ./public_key):")
+        npb_fname = input(
+            "please enter public key filename (default is ./keys/ecc_public_key):"
+        )
 
         if npk_fname.strip():
             pk_fname = npk_fname
@@ -77,13 +82,16 @@ def ECC_keygen_helper(args):
             pb_fname = npb_fname
 
         # output keys as files
+        pb_write_mode = "wb"
+        if args.pb_format in ["PEM", "OpenSSH"]:
+            pb_write_mode = "w"
         print("saving keys...")
         with open(f"{pk_fname}.{args.pk_format.lower()}", "wb") as pkf, open(
-            f"{pb_fname}.{args.pb_format.lower()}", "wb"
+            f"{pb_fname}.{args.pb_format.lower()}", pb_write_mode
         ) as pbf:
             pkf.write(private_key)
             pbf.write(public_key)
-
+        print("keys saved!")
     except Exception as e:
         print(f"{e}")
         exit(1)
