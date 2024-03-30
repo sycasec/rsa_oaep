@@ -119,37 +119,39 @@ RSA-OAEP encryption and decryption + signing and verification tool
         help="secret key string for HMAC verification (only used for HMAC)",
     )
 
-    # --------------------------------- keygen ---------------------------------
+    # --------------------------------- rsa keygen ---------------------------------
 
-    keygen_parser = subparsers.add_parser("keygen", help="generate RSA-OAEP keys")
-    keygen_parser.add_argument(
+    rsa_keygen_parser = subparsers.add_parser(
+        "rsa_keygen", help="generate rsa-oaep keys"
+    )
+    rsa_keygen_parser.add_argument(
         "--pkcs", type=int, choices=[1, 8], required=True, help="PKCS standard (1 or 8)"
     )
-    keygen_parser.add_argument(
+    rsa_keygen_parser.add_argument(
         "--pk_format",
         choices=["PEM", "DER"],
         default="DER",
-        help="output format for the keys",
+        help="output format for private key",
     )
 
-    keygen_parser.add_argument(
+    rsa_keygen_parser.add_argument(
         "--pb_format",
         choices=["PEM", "DER", "OpenSSH"],
         default="PEM",
-        help="output format for the public key",
+        help="output format for public key",
     )
 
-    keygen_parser.add_argument(
+    rsa_keygen_parser.add_argument(
         "--phrase", help="passphrase for PKCS#8 key (required if PKCS#8)"
     )
-    keygen_parser.add_argument(
+    rsa_keygen_parser.add_argument(
         "--bits",
         choices=[1024, 2048, 3072],
         default=2048,
         help="key size in bits",
         type=int,
     )
-    keygen_parser.add_argument(
+    rsa_keygen_parser.add_argument(
         "--cipher",
         choices=[
             "AES128-GCM",
@@ -164,7 +166,65 @@ RSA-OAEP encryption and decryption + signing and verification tool
         help="cipher for pkcs#8 private key derivation",
     )
 
-    keygen_parser.add_argument(
+    rsa_keygen_parser.add_argument(
+        "--hash",
+        choices=[
+            "SHA256",
+            "SHA384",
+            "SHA512-224",
+            "SHA512-256",
+            "SHA3-256",
+            "SHA3-384",
+            "SHA3-512",
+        ],
+        default="SHA512",
+        help="hash for pkcs#8 private key derivation",
+    )
+
+    # --------------------------------- ecc keygen ---------------------------------
+
+    ecc_keygen_parser = subparsers.add_parser("ecc_keygen", help="generate ecc keys")
+    ecc_keygen_parser.add_argument(
+        "--curve",
+        choices=["p256", "p384", "p521"],
+        required=True,
+        help="NIST standard elliptic curve starting at the recommended prime field of 256 bits",
+    )
+
+    ecc_keygen_parser.add_argument(
+        "--phrase", required=True, help="passphrase to protect private key"
+    )
+
+    ecc_keygen_parser.add_argument(
+        "--pk_format",
+        choices=["PEM", "DER", "SEC1", "raw"],
+        default="DER",
+        help="output format for private key",
+    )
+
+    ecc_keygen_parser.add_argument(
+        "--pb_format",
+        choices=["PEM", "DER", "OpenSSH" "SEC1", "raw"],
+        default="PEM",
+        help="output format for public key",
+    )
+
+    ecc_keygen_parser.add_argument(
+        "--cipher",
+        choices=[
+            "AES128-GCM",
+            "AES192-GCM",
+            "AES256-GCM",
+            "AES128-CBC",
+            "AES192-CBC",
+            "AES256-CBC",
+            "DES-EDE3-CBC",
+        ],
+        default="AES256-CBC",
+        help="cipher for pkcs#8 private key derivation",
+    )
+
+    ecc_keygen_parser.add_argument(
         "--hash",
         choices=[
             "SHA256",
