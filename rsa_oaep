@@ -403,14 +403,15 @@ def encrypt_then_sign_helper():
                 "cipher_path": ciphertext_file,
             }
         )
-    sign_helper(
-        {
-            "scheme": scheme,
-            "priv_key": priv_key_file,
-            "secret": secret,
-            "cipher_path": ciphertext_file,
-        }
-    )
+    else:
+        sign_helper(
+            {
+                "scheme": scheme,
+                "priv_key": priv_key_file,
+                "phrase": secret,
+                "cipher_path": ciphertext_file,
+            }
+        )
 
 
 # ----------------------------- main ------------------------------
@@ -430,6 +431,8 @@ def main():
         sign_helper(args)
     elif args.command == "verify":
         verify_helper(args)
+    elif args.command == "ets":
+        encrypt_then_sign_helper()
 
 
 if __name__ == "__main__":
