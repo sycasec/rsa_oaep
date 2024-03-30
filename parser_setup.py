@@ -16,7 +16,7 @@ def gen_parser():
                                                                     | $$      
                                                                     |__/      
 
-RSA-OAEP encryption and decryption + signing and verification tool
+RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and verification tool
         """,
     )
 
@@ -24,7 +24,6 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     # -------------------------------- encrypt --------------------------------
 
-    # TODO: add an argument for file input
     encrypt_parser = subparsers.add_parser(
         "encrypt", help="encrypt a message with RSA-OAEP"
     )
