@@ -74,6 +74,11 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     sign_parser.add_argument(
+        "--phrase",
+        help="passphrase for private key, required if passhphrase was added during key generation. if not supplied, key cannot be read.",
+    )
+
+    sign_parser.add_argument(
         "--secret",
         help="secret key for HMAC signing (only used for HMAC)",
     )
