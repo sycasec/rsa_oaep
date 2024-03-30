@@ -202,7 +202,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     ecc_keygen_parser.add_argument(
         "--pk_format",
-        choices=["PEM", "DER", "SEC1", "raw"],
+        choices=["PEM", "DER", "raw"],
         default="DER",
         help="output format for private key",
     )
