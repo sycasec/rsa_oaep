@@ -108,7 +108,15 @@ def sign_helper(args):
         try:
             if args.scheme.startswith("RSA"):
                 print("reading private key...")
-                priv_key = RSA.import_key(open(args.priv_key).read())
+                with open(args.priv_key, "rb") as key_file:
+                    if args.phrase:
+                        priv_key = RSA.import_key(
+                            key_file.read(), passphrase=args.phrase
+                        )
+                    else:
+                        priv_key = RSA.import_key(key_file.read())
+
+                print("reading ciphertext...")
                 if args.cipher_path:
                     with open(args.cipher_path, "rb") as cipher_file:
                         ciphertext = cipher_file.read()
@@ -117,6 +125,7 @@ def sign_helper(args):
                 else:
                     raise Exception("no ciphertext supplied")
 
+                print("signing message...")
                 if args.scheme == "RSA_PSS":
                     signature = RSA_PSS_sign_message(priv_key, ciphertext)
                 elif args.scheme == "RSA_SSA":
@@ -139,6 +148,8 @@ def sign_helper(args):
                         key = ECC.import_key(key_file.read(), passphrase=args.phrase)
                     else:
                         key = ECC.import_key(key_file.read())
+
+                print("reading ciphertext...")
                 if args.cipher_path:
                     with open(args.cipher_path, "rb") as cipher_file:
                         ciphertext = cipher_file.read()
@@ -147,6 +158,7 @@ def sign_helper(args):
                 else:
                     raise Exception("no ciphertext supplied")
 
+                print("signing message...")
                 signature = ECDSA_sign_message(key, ciphertext)
 
                 default_sig_fname = "./sig.bin"
@@ -165,6 +177,7 @@ def sign_helper(args):
             print("no secret key supplied! exiting.")
             exit(1)
         try:
+            print("reading ciphertext...")
             if args.cipher_path:
                 with open(args.cipher_path, "rb") as cipher_file:
                     ciphertext = cipher_file.read()
@@ -173,6 +186,7 @@ def sign_helper(args):
             else:
                 raise Exception("no ciphertext supplied")
 
+            print("signing message...")
             signature = HMAC_sign_message(args.secret, ciphertext)
 
             default_sig_fname = "./sig.hex"
@@ -347,6 +361,56 @@ def decrypt_helper(args):
         print(f"decrypted message: {message}")
     except Exception as e:
         print(f"{e}")
+
+
+def encrypt_then_sign_helper():
+    print(
+        "You must first have already generated an encryption key pair and a signing key pair. Only a string is needed for HMAC signature however."
+    )
+    input("Press any key to continue, or ctrl+c to exit.")
+
+    pub_key_file = input("Path to pubkey file for message encryption: ")
+    message = input("Message to encrypt: ")
+
+    input(
+        "Please output the ciphertext as a file to continue with signing after encryption.\nPress any key to continue."
+    )
+    encrypt_helper({"pub_key": pub_key_file, "msg": message})
+
+    input("Press any key to continue to signing, or ctrl+c to exit.")
+
+    scheme = ""
+    while scheme not in ["RSA_PSS", "RSA_SSA", "ECDSA", "HMAC"]:
+        scheme = input("Scheme to use for signing (RSA_PSS, RSA_SSA, ECDSA, HMAC): ")
+
+    secret = ""
+    priv_key_file = ""
+    if scheme == "HMAC":
+        while not secret.strip():
+            secret = input("Secret key for HMAC: ")
+
+    else:
+        priv_key_file = input("Path to privkey file for message signing: ")
+        secret = input("Secret passphrase during private key generation (optional): ")
+
+    ciphertext_file = input("path to ciphertext file to sign: ")
+
+    if scheme == "HMAC":
+        sign_helper(
+            {
+                "scheme": scheme,
+                "secret": secret,
+                "cipher_path": ciphertext_file,
+            }
+        )
+    sign_helper(
+        {
+            "scheme": scheme,
+            "priv_key": priv_key_file,
+            "secret": secret,
+            "cipher_path": ciphertext_file,
+        }
+    )
 
 
 # ----------------------------- main ------------------------------
