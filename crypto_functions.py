@@ -44,8 +44,8 @@ def generate_rsa_key_pair(
 def generate_ecc_key_pair(
     pk_format,
     pb_format,
-    curve: str,
     phrase: str,
+    curve: str = "p256",
     cipher: str = "AES256-CBC",
     hash: str = "SHA512",
 ) -> tuple[bytes, bytes]:
