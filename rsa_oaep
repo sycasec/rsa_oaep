@@ -84,9 +84,12 @@ def ECC_keygen_helper(args):
         # output keys as files
         pb_write_mode = "wb"
         if args.pb_format in ["PEM", "OpenSSH"]:
-            pb_write_mode = "w"
+            pb_write_mode = "wt"
+        pk_write_mode = "wb"
+        if args.pk_format == "PEM":
+            pk_write_mode = "wt"
         print("saving keys...")
-        with open(f"{pk_fname}.{args.pk_format.lower()}", "wb") as pkf, open(
+        with open(f"{pk_fname}.{args.pk_format.lower()}", pk_write_mode) as pkf, open(
             f"{pb_fname}.{args.pb_format.lower()}", pb_write_mode
         ) as pbf:
             pkf.write(private_key)
@@ -108,6 +111,7 @@ def sign_helper(args):
             exit(1)
         try:
             if args.scheme.startswith("RSA"):
+                print("reading private key...")
                 priv_key = RSA.import_key(open(args.priv_key).read())
                 if args.cipher_path:
                     with open(args.cipher_path, "rb") as cipher_file:
@@ -133,7 +137,12 @@ def sign_helper(args):
                     sig_file.write(signature)
 
             elif args.scheme == "ECDSA":
-                key = ECC.import_key(open(args.priv_key).read())
+                print("reading private key...")
+                with open(args.priv_key, "rb") as key_file:
+                    if args.phrase:
+                        key = ECC.import_key(key_file.read(), passphrase=args.phrase)
+                    else:
+                        key = ECC.import_key(key_file.read())
                 if args.cipher_path:
                     with open(args.cipher_path, "rb") as cipher_file:
                         ciphertext = cipher_file.read()
@@ -318,7 +327,13 @@ def decrypt_helper(args):
         print("cannot supply both a message and a file")
         exit(1)
     try:
-        priv_key = RSA.importKey(open(args.priv_key).read())
+        # priv_key = RSA.importKey(open(args.priv_key).read())
+        with open(args.priv_key, "rb") as key_file:
+            if args.phrase:
+                priv_key = RSA.import_key(key_file.read(), passphrase=args.phrase)
+            else:
+                priv_key = RSA.import_key(key_file.read())
+
         if args.msg:
             message = decrypt_message(
                 priv_key, args.msg.encode().decode("unicode_escape")
