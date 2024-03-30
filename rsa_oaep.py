@@ -11,38 +11,80 @@ from Crypto.Hash import HMAC, SHA256
 
 
 # ----------------------------- helpers ------------------------------
-def keygen_helper(args):
-    # input verification
-    if args.pkcs == 8:
-        if args.phrase is None:
-            print("Passphrase required for PKCS#8")
-            exit(1)
-        if args.pk_format == "PEM" and (
-            args.cipher is not None or args.hash is not None
-        ):
-            print("Cipher and hash are not supported for PEM format")
-            exit(1)
-    keygen_args = {key: value for key, value in vars(args).items() if key != "command"}
-    private_key, public_key = generate_rsa_key_pair(**keygen_args)
+def RSA_keygen_helper(args):
+    try:
+        # input verification
+        if args.pkcs == 8:
+            if args.phrase is None:
+                print("Passphrase required for PKCS#8")
+                exit(1)
+            if args.pk_format == "PEM" and (
+                args.cipher is not None or args.hash is not None
+            ):
+                print("Cipher and hash are not supported for PEM format")
+                exit(1)
+        keygen_args = {
+            key: value for key, value in vars(args).items() if key != "command"
+        }
+        private_key, public_key = generate_rsa_key_pair(**keygen_args)
 
-    # customize output filename / location
-    pk_fname = "./private_key"
-    pb_fname = "./public_key"
-    npk_fname = input("please enter private key filename (default is ./private_key):")
-    npb_fname = input("please enter public key filename (default is ./public_key):")
+        # customize output filename / location
+        pk_fname = "./private_key"
+        pb_fname = "./public_key"
+        npk_fname = input(
+            "please enter private key filename (default is ./private_key):"
+        )
+        npb_fname = input("please enter public key filename (default is ./public_key):")
 
-    if npk_fname.strip():
-        pk_fname = npk_fname
-    if npb_fname.strip():
-        pb_fname = npb_fname
+        if npk_fname.strip():
+            pk_fname = npk_fname
+        if npb_fname.strip():
+            pb_fname = npb_fname
 
-    # output keys as files
-    print("saving keys...")
-    with open(f"{pk_fname}.{args.pk_format.lower()}", "wb") as pkf, open(
-        f"{pb_fname}.{args.pb_format.lower()}", "wb"
-    ) as pbf:
-        pkf.write(private_key)
-        pbf.write(public_key)
+        # output keys as files
+        print("saving keys...")
+        with open(f"{pk_fname}.{args.pk_format.lower()}", "wb") as pkf, open(
+            f"{pb_fname}.{args.pb_format.lower()}", "wb"
+        ) as pbf:
+            pkf.write(private_key)
+            pbf.write(public_key)
+    except Exception as e:
+        print(f"{e}")
+        exit(1)
+
+
+def ECC_keygen_helper(args):
+
+    try:
+        keygen_args = {
+            key: value for key, value in vars(args).items() if key != "command"
+        }
+        private_key, public_key = generate_ecc_key_pair(**keygen_args)
+
+        # customize output filename / location
+        pk_fname = "./private_key"
+        pb_fname = "./public_key"
+        npk_fname = input(
+            "please enter private key filename (default is ./private_key):"
+        )
+        npb_fname = input("please enter public key filename (default is ./public_key):")
+
+        if npk_fname.strip():
+            pk_fname = npk_fname
+        if npb_fname.strip():
+            pb_fname = npb_fname
+
+        # output keys as files
+        print("saving keys...")
+        with open(f"{pk_fname}.{args.pk_format.lower()}", "wb") as pkf, open(
+            f"{pb_fname}.{args.pb_format.lower()}", "wb"
+        ) as pbf:
+            pkf.write(private_key)
+            pbf.write(public_key)
+
+    except Exception as e:
+        print(f"{e}")
+        exit(1)
 
 
 def sign_helper(args):
@@ -290,8 +332,10 @@ def main():
     parser = gen_parser()
 
     args = parser.parse_args()
-    if args.command == "keygen":
-        keygen_helper(args)
+    if args.command == "RSA_keygen":
+        RSA_keygen_helper(args)
+    elif args.command == "ECC_keygen":
+        ECC_keygen_helper(args)
     elif args.command == "encrypt":
         encrypt_helper(args)
     elif args.command == "decrypt":
