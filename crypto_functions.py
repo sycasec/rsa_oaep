@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import Optional
+from typing import Optional, Union
 
 from Crypto.PublicKey import RSA, ECC
 from Crypto.Cipher import PKCS1_OAEP
@@ -48,7 +48,7 @@ def generate_ecc_key_pair(
     curve: str = "p256",
     cipher: str = "AES256-CBC",
     hash: str = "SHA512",
-) -> tuple[bytes, bytes]:
+) -> tuple[Union[str, bytes], Union[str, bytes]]:
     key = ECC.generate(curve=curve)
     private_key: bytes = key.export_key(
         format=pk_format,
