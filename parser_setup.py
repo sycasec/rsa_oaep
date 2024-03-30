@@ -29,9 +29,9 @@ RSA-OAEP encryption and decryption + signing and verification tool
         "encrypt", help="encrypt a message with RSA-OAEP"
     )
     encrypt_parser.add_argument(
-        "--pub_key", required=True, help="receiver public key file"
+        "-pb", "--pub_key", required=True, help="receiver public key file"
     )
-    encrypt_parser.add_argument("--msg", required=True, help="message to encrypt")
+    encrypt_parser.add_argument("-m", "--msg", required=True, help="message to encrypt")
 
     # -------------------------------- decrypt --------------------------------
 
@@ -40,10 +40,16 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     decrypt_parser.add_argument(
-        "--priv_key", required=True, help="receiver private key"
+        "-pk", "--priv_key", required=True, help="receiver private key"
     )
-    decrypt_parser.add_argument("--msg", help="raw ciphertext bytes to decrypt")
-    decrypt_parser.add_argument("--filepath", help="filepath storing ciphertext")
+
+    decrypt_parser.add_argument(
+        "-p",
+        "--phrase",
+        help="passphrase for private key, required if passphrase was added during key generation",
+    )
+    decrypt_parser.add_argument("-m", "--msg", help="raw ciphertext bytes to decrypt")
+    decrypt_parser.add_argument("-f", "--filepath", help="filepath storing ciphertext")
 
     # -------------------------------- sign --------------------------------
     sign_parser = subparsers.add_parser(
@@ -51,6 +57,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     sign_parser.add_argument(
+        "-sc",
         "--scheme",
         choices=["ECDSA", "RSA_PSS", "RSA_SSA", "HMAC"],
         required=True,
@@ -58,27 +65,32 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     sign_parser.add_argument(
+        "-cp",
         "--cipher_path",
         metavar="/path/to/ciphertext",
         help="path to the file containing the message to be signed",
     )
 
     sign_parser.add_argument(
+        "-c",
         "--ciphertext",
         help="message in bytes to be signed",
     )
 
     sign_parser.add_argument(
+        "-pk",
         "--priv_key",
         help="private key file path for signing (cannot be used for HMAC)",
     )
 
     sign_parser.add_argument(
+        "-p",
         "--phrase",
         help="passphrase for private key, required if passhphrase was added during key generation. if not supplied, key cannot be read.",
     )
 
     sign_parser.add_argument(
+        "-s",
         "--secret",
         help="secret key for HMAC signing (only used for HMAC)",
     )
@@ -90,7 +102,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     verify_parser.add_argument(
-        "--scheme",
+        "-sc" "--scheme",
         choices=["ECDSA", "RSA_PSS", "RSA_SSA", "HMAC"],
         required=True,
         help="digital signature scheme to be used in verification",
@@ -99,27 +111,32 @@ RSA-OAEP encryption and decryption + signing and verification tool
     verify_parser.add_argument("--signature", help="signature to be verified")
 
     verify_parser.add_argument(
+        "-sp",
         "--signature_path",
         help="path to the file containing the signature to be verified",
     )
 
     verify_parser.add_argument(
+        "-cp",
         "--cipher_path",
         metavar="/path/to/ciphertext",
         help="path to the file containing the signed ciphertext",
     )
 
     verify_parser.add_argument(
+        "-c",
         "--ciphertext",
         help="signed ciphertext in bytes",
     )
 
     verify_parser.add_argument(
+        "-pb",
         "--pub_key",
         help="public key file path for verifying the signature (cannot be used for HMAC)",
     )
 
     verify_parser.add_argument(
+        "-s",
         "--secret",
         help="secret key string for HMAC verification (only used for HMAC)",
     )
@@ -130,9 +147,15 @@ RSA-OAEP encryption and decryption + signing and verification tool
         "rsa_keygen", help="generate rsa-oaep keys"
     )
     rsa_keygen_parser.add_argument(
-        "--pkcs", type=int, choices=[1, 8], required=True, help="PKCS standard (1 or 8)"
+        "-pkcs",
+        "--pkcs",
+        type=int,
+        choices=[1, 8],
+        required=True,
+        help="PKCS standard (1 or 8)",
     )
     rsa_keygen_parser.add_argument(
+        "-pkf",
         "--pk_format",
         choices=["PEM", "DER"],
         default="DER",
@@ -140,6 +163,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     rsa_keygen_parser.add_argument(
+        "-pbf",
         "--pb_format",
         choices=["PEM", "DER", "OpenSSH"],
         default="PEM",
@@ -147,16 +171,19 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     rsa_keygen_parser.add_argument(
-        "--phrase", help="passphrase for PKCS#8 key (required if PKCS#8)"
+        "-p", "--phrase", help="passphrase for PKCS#8 key (required if PKCS#8)"
     )
     rsa_keygen_parser.add_argument(
+        "-b",
         "--bits",
         choices=[1024, 2048, 3072],
         default=2048,
         help="key size in bits",
         type=int,
     )
+
     rsa_keygen_parser.add_argument(
+        "-c",
         "--cipher",
         choices=[
             "AES128-GCM",
@@ -172,6 +199,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     rsa_keygen_parser.add_argument(
+        "-h",
         "--hash",
         choices=[
             "SHA256",
@@ -190,7 +218,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     ecc_keygen_parser = subparsers.add_parser("ecc_keygen", help="generate ecc keys")
     ecc_keygen_parser.add_argument(
-        "--curve",
+        "-cu" "--curve",
         choices=["p256", "p384", "p521"],
         required=True,
         help="NIST standard elliptic curve starting at the recommended prime field of 256 bits",
