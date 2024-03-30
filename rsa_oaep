@@ -315,6 +315,7 @@ def verify_helper(args):
 
 def encrypt_helper(args):
     try:
+        print("reading public key...")
         pub_key = RSA.import_key(open(args.pub_key).read())
         ciphertext = encrypt_message(pub_key, args.msg)
         save = input("write ciphertext to file? [Y/n]: ")
@@ -363,55 +364,74 @@ def decrypt_helper(args):
         print(f"{e}")
 
 
+class EncryptArgs:
+    def __init__(self, pub_key, msg):
+        self.pub_key = pub_key
+        self.msg = msg
+
+
+class SignArgs:
+    def __init__(
+        self,
+        scheme,
+        secret,
+        ciphertext=None,
+        cipher_path=None,
+        priv_key=None,
+        phrase=None,
+    ):
+        self.scheme = scheme
+        self.secret = secret
+        self.ciphertext = ciphertext
+        self.cipher_path = cipher_path
+        self.priv_key = priv_key
+        self.phrase = phrase
+
+
 def encrypt_then_sign_helper():
-    print(
-        "You must first have already generated an encryption key pair and a signing key pair. Only a string is needed for HMAC signature however."
-    )
-    input("Press any key to continue, or ctrl+c to exit.")
-
-    pub_key_file = input("Path to pubkey file for message encryption: ")
-    message = input("Message to encrypt: ")
-
-    input(
-        "Please output the ciphertext as a file to continue with signing after encryption.\nPress any key to continue."
-    )
-    encrypt_helper({"pub_key": pub_key_file, "msg": message})
-
-    input("Press any key to continue to signing, or ctrl+c to exit.")
-
-    scheme = ""
-    while scheme not in ["RSA_PSS", "RSA_SSA", "ECDSA", "HMAC"]:
-        scheme = input("Scheme to use for signing (RSA_PSS, RSA_SSA, ECDSA, HMAC): ")
-
-    secret = ""
-    priv_key_file = ""
-    if scheme == "HMAC":
-        while not secret.strip():
-            secret = input("Secret key for HMAC: ")
-
-    else:
-        priv_key_file = input("Path to privkey file for message signing: ")
-        secret = input("Secret passphrase during private key generation (optional): ")
-
-    ciphertext_file = input("path to ciphertext file to sign: ")
-
-    if scheme == "HMAC":
-        sign_helper(
-            {
-                "scheme": scheme,
-                "secret": secret,
-                "cipher_path": ciphertext_file,
-            }
+    try:
+        print(
+            "You must first have already generated an encryption key pair and a signing key pair.\nOnly a string is needed for HMAC signature however."
         )
-    else:
-        sign_helper(
-            {
-                "scheme": scheme,
-                "priv_key": priv_key_file,
-                "phrase": secret,
-                "cipher_path": ciphertext_file,
-            }
+        input("Press any key to continue, or ctrl+c to exit.")
+
+        pub_key_file = input("Path to pubkey file for message encryption: ")
+        message = input("Message to encrypt: ")
+
+        input(
+            "Please output the ciphertext as a file to continue with signing after encryption.\nPress any key to continue."
         )
+        encrypt_helper(EncryptArgs(pub_key_file, message))
+
+        input("Press any key to continue to signing, or ctrl+c to exit.")
+
+        scheme = ""
+        while scheme not in ["RSA_PSS", "RSA_SSA", "ECDSA", "HMAC"]:
+            scheme = input(
+                "Scheme to use for signing (RSA_PSS, RSA_SSA, ECDSA, HMAC): "
+            )
+
+        secret = ""
+        phrase = ""
+        priv_key_file = ""
+        if scheme == "HMAC":
+            while not secret.strip():
+                secret = input("Secret key for HMAC: ")
+
+        else:
+            priv_key_file = input("Path to privkey file for message signing: ")
+            phrase = input(
+                "Secret passphrase during private key generation (optional): "
+            )
+
+        ciphertext_file = input("path to ciphertext file to sign: ")
+
+        sign_args = SignArgs(scheme, secret, "", ciphertext_file, priv_key_file, phrase)
+
+        sign_helper(sign_args)
+    except Exception as e:
+        print(f"{e}")
+        exit(1)
 
 
 # ----------------------------- main ------------------------------
