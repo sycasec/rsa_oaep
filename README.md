@@ -29,7 +29,7 @@ Or you can `chmod +x` the file and run it directly
     ./rsa_oaep --help
 ```
 
-Please do NOT try to run `rsa_oaep` on another directory, as saving keys will not work. The script will look for the `keys` directory in the same directory as the `rsa_oaepe` script.
+Please do NOT try to run `rsa_oaep` on another directory, as saving keys will not work. The script will look for the `keys` directory in the same directory as the `rsa_oaep` script.
 
 
 ## Functions roadmap

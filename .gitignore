@@ -1,6 +1,6 @@
 # ignore key files
-*.pem
-*.der
-*.bin
+# *.pem
+# *.der
+# *.bin
 
 __pycache__/
