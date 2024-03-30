@@ -199,7 +199,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     rsa_keygen_parser.add_argument(
-        "-h",
+        "-hash",
         "--hash",
         choices=[
             "SHA256",
@@ -218,17 +218,19 @@ RSA-OAEP encryption and decryption + signing and verification tool
 
     ecc_keygen_parser = subparsers.add_parser("ecc_keygen", help="generate ecc keys")
     ecc_keygen_parser.add_argument(
-        "-cu" "--curve",
+        "-cu",
+        "--curve",
         choices=["p256", "p384", "p521"],
         required=True,
         help="NIST standard elliptic curve starting at the recommended prime field of 256 bits",
     )
 
     ecc_keygen_parser.add_argument(
-        "--phrase", required=True, help="passphrase to protect private key"
+        "-p", "--phrase", required=True, help="passphrase to protect private key"
     )
 
     ecc_keygen_parser.add_argument(
+        "-pkf",
         "--pk_format",
         choices=["PEM", "DER", "raw"],
         default="DER",
@@ -236,6 +238,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     ecc_keygen_parser.add_argument(
+        "-pbf",
         "--pb_format",
         choices=["PEM", "DER", "OpenSSH" "SEC1", "raw"],
         default="PEM",
@@ -243,6 +246,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     ecc_keygen_parser.add_argument(
+        "-c",
         "--cipher",
         choices=[
             "AES128-GCM",
@@ -258,6 +262,7 @@ RSA-OAEP encryption and decryption + signing and verification tool
     )
 
     ecc_keygen_parser.add_argument(
+        "-hash",
         "--hash",
         choices=[
             "SHA256",
