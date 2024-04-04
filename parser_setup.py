@@ -147,9 +147,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
 
     # --------------------------------- rsa keygen ---------------------------------
 
-    rsa_keygen_parser = subparsers.add_parser(
-        "rsa_keygen", help="generate rsa-oaep keys"
-    )
+    rsa_keygen_parser = subparsers.add_parser("rsa_keygen", help="generate rsa keys")
     rsa_keygen_parser.add_argument(
         "-pkcs",
         "--pkcs",
