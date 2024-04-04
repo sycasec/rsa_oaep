@@ -2,5 +2,6 @@
 *.pem
 *.der
 *.bin
+*.hex
 
 __pycache__/
