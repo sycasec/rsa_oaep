@@ -1,7 +1,7 @@
 # rsa_oaep
 Now you might think this is an API. It kind of is. It's all in the name. `rsa_oaep` is a cli-based RSA-OAEP encryption and decryption tool with signing and verification. It also supports four different signing methods. Signing, verification, encryption, and decryption are all separate `commands`, but since they are all isolated and have output files, they are expected to be used in a encrypt-then-sign and verify-then-decrypt manner. 
 
-## installation
+## Installation
 Clone the repository first. Make sure you have `python3` and `PyCryptodome` installed. If you don't:
 ```bash
 pip3 install pycryptodome
