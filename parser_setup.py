@@ -174,9 +174,9 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
     rsa_keygen_parser.add_argument(
         "-b",
         "--bits",
-        choices=[1024, 1634, 2048, 3072],
+        choices=[1024, 1648, 2048, 3072],
         default=1642,
-        help="key size in bits, (default is 1642)",
+        help="key size in bits, (default is 1648)",
         type=int,
     )
 
