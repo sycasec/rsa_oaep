@@ -22,11 +22,6 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
 
     subparsers = parser.add_subparsers(dest="command", help="available commands")
 
-    subparsers.add_parser(
-        "ets",
-        help="Assumes that you already have generated encryption and signing keypairs: encrypt, then sign a message",
-    )
-
     # -------------------------------- encrypt --------------------------------
 
     encrypt_parser = subparsers.add_parser(
