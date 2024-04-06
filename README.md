@@ -181,7 +181,7 @@ While hardening is not necessary, it is simply there to provide security. Regard
 - `k` is the length in octets of the RSA modulus `n`
 - `hLen` is the length in octets of the hash function output
 
-To get an `mLen` of 140, we use the formula to get a total of 1648 bits for `k`.
+*To get an `mLen` of 140, we use the formula to get a total of 1648 bits for `k`.*
 
 ### ECC Key generation
 `rsa_oaep` provides several options regarding ECC key generation, such as:
