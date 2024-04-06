@@ -62,12 +62,12 @@ def generate_ecc_key_pair(
 
 
 def encrypt_message(public_key: RSA.RsaKey, message: str) -> bytes:
-    cipher = PKCS1_OAEP.new(public_key)
+    cipher = PKCS1_OAEP.new(public_key, hashAlgo=SHA256)
     return cipher.encrypt(message.encode("utf-8"))
 
 
 def decrypt_message(private_key: RSA.RsaKey, ciphertext: bytes) -> str:
-    cipher = PKCS1_OAEP.new(private_key)
+    cipher = PKCS1_OAEP.new(private_key, hashAlgo=SHA256)
     return cipher.decrypt(ciphertext).decode("utf-8")
 
 
