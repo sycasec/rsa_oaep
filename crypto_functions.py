@@ -12,7 +12,7 @@ from Crypto.Hash import HMAC, SHA256
 def generate_rsa_key_pair(
     pk_format: str,
     pb_format: str,
-    bits: int = 2048,
+    bits: int = 1642,
     phrase: Optional[str] = None,
     pkcs: int = 1,
     cipher: str = "AES256-CBC",
