@@ -4,13 +4,13 @@ Now you might think this is an API. It kind of is. It's all in the name. `rsa_oa
 ## installation
 Clone the repository first. Make sure you have `python3` and `PyCryptodome` installed. If you don't:
 ```bash
-    pip3 install pycryptodome
+pip3 install pycryptodome
 ```
 
 If you aren't using `pip`, you most likely can install it from your package manager
 ```bash
     # arch
-    sudo pacman -Sy python-pycryptodome
+sudo pacman -Sy python-pycryptodome
 ```
 
 ## Features
@@ -32,8 +32,8 @@ It is a relatively simple command line tool. You can run `rsa_oaep` with `python
 
 Or you can `chmod +x` the file and run it directly
 ```bash
-    chmod +x rsa_oaep
-    ./rsa_oaep --help
+chmod +x rsa_oaep
+./rsa_oaep --help
 ```
 
 > [!WARNING] 
@@ -43,7 +43,7 @@ Or you can `chmod +x` the file and run it directly
 ### Help
 
 ```bash
-$ ./rsa_oaep -h
+rsa_oaep -h
 usage: rsa_oaep [-h] {ets,encrypt,decrypt,sign,verify,rsa_keygen,ecc_keygen} ...
 
   /$$$$$$   /$$$$$$$  /$$$$$$           /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$
@@ -71,9 +71,21 @@ positional arguments:
     ecc_keygen          generate ecc keys
 ```
 
+To see additional help for a specific command, you can run `rsa_oaep <command> -h` or `rsa_oaep <command> --help`.
+
 ### Generating keys
-To generate an RSA encryption keypair, run the following command:
+To generate a hardended RSA private key and public key, you can run the following command:
 
-```python
-
+```bash
+rsa_oaep rsa_keygen --pkcs 8 --pk_format DER --pb_format PEM -p "secret"
 ```
+
+Upon running, the script will prompt you if you want to change the destination file + name of the output keys. This generates a private key `.der` private key and a `.pem` public key. The private key has the passphrase "secret" which you will need to decrypt a message signed with the corresponding public key. You can use the same method to generate a signing keypair.
+
+### Generating ECC keys for signing
+To generate a ECC private key and public key for signing and verification, you can run the following command:
+```bash
+rsa_oaep ecc_keygen --curve p256 --phrase "ecc_secret" --pk_format DER --pb_format PEM
+```
+
+Similar to the RSA key generation, this will generate a private key and public key in the specified formats. The private key is encrypted with the passphrase "ecc_secret".
