@@ -168,6 +168,8 @@ Similar to signing, if a secret phrase was supplied during key generation, you w
 ## Methodology
 There is no stopping you from just skipping signing and verification. This was modeled after the fact that in the `encrypt-then-sign` scheme, both the `ciphertext` and `tag` are sent to the reciever.
 
+> [!NOTE] All file outputs are in raw format.
+
 ### RSA Key generation
 `rsa_oaep` provides several options regarding RSA key generation, such as:
 - specifying the public and private key format
@@ -194,7 +196,7 @@ While hardening is not necessary, it is simply there to provide security. Regard
 The NIST curves start at the standard 256 bits. For more information, you can check the [NIST curves](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf).
 
 ### Encryption and Decryption
-The generated RSA keys are used to encrypt and decrypt with the `RSA-OAEP (Optimal Assymetric Encryption Padding)` scheme, which is a probabilistic encryption scheme. The `OAEP` scheme is used to prevent chosen-ciphertext attacks. The `RSA-OAEP` scheme uses a mask generation function and a hash function to randomize the message before encryption. The `RSA-OAEP` scheme is defined in [RFC 8017](https://www.rfc-editor.org/rfc/rfc8017#section-7.1.1). The `RSA-OAEP` scheme is hardcoded to use `SHA256` as the hash function.
+The generated RSA keys are used to encrypt and decrypt with the `RSA-OAEP (Optimal Assymetric Encryption Padding)` scheme, which is a probabilistic encryption scheme. The `OAEP` scheme is used to prevent chosen-ciphertext attacks. The `RSA-OAEP` scheme uses a mask generation function and a hash function to randomize the message before encryption. The `RSA-OAEP` scheme is defined in [RFC 8017](https://www.rfc-editor.org/rfc/rfc8017#section-7.1.1). The `RSA-OAEP` scheme is hardcoded to use `SHA256` as the hash function for its security, but mostly to keep it simple to limit message length.
 
 ### Signature and Verification
 `rsa_oaep` provides several options regarding signing and verification, such as:
