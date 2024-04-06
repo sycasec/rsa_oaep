@@ -138,8 +138,10 @@ def sign_helper(args):
                 if sig_fname.strip():
                     default_sig_fname = sig_fname
 
+                print("saving signature...")
                 with open(default_sig_fname, "wb") as sig_file:
                     sig_file.write(signature)
+                print("signature saved!")
 
             elif args.scheme == "ECDSA":
                 print("reading private key...")
@@ -166,8 +168,10 @@ def sign_helper(args):
                 if sig_fname.strip():
                     default_sig_fname = sig_fname
 
+                print("saving signature...")
                 with open(default_sig_fname, "wb") as sig_file:
                     sig_file.write(signature)
+                print("signature saved!")
 
         except Exception as e:
             print(f"{e}")
@@ -194,8 +198,10 @@ def sign_helper(args):
             if sig_fname.strip():
                 default_sig_fname = sig_fname
 
+            print("saving signature...")
             with open(default_sig_fname, "w") as sig_file:
                 sig_file.write(signature)
+            print("signature saved!")
 
         except Exception as e:
             print(f"{e}")
@@ -339,6 +345,7 @@ def encrypt_helper(args):
             print("saving ciphertext...")
             with open(f"{fname}", "wb") as outfile:
                 outfile.write(ciphertext)
+            print("ciphertext saved!")
         else:
             print(ciphertext)
     except Exception as e:
