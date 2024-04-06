@@ -1,1 +1,1 @@
-Hello, this is a 140 character message. There is definitely no context to be taken from this message other than that it has 140 characters.
+Hello, this is a 140 character message. There is no context contained to this message other than that it contains a total of 140 characters.
