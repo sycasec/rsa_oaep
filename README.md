@@ -168,7 +168,8 @@ Similar to signing, if a secret phrase was supplied during key generation, you w
 ## Methodology
 There is no stopping you from just skipping signing and verification. This was modeled after the fact that in the `encrypt-then-sign` scheme, both the `ciphertext` and `tag` are sent to the reciever.
 
-> [!NOTE] All file outputs are in raw format.
+> [!NOTE]
+> All file outputs are in raw format.
 
 ### RSA Key generation
 `rsa_oaep` provides several options regarding RSA key generation, such as:
