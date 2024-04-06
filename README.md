@@ -13,6 +13,16 @@ If you aren't using `pip`, you most likely can install it from your package mana
     sudo pacman -Sy python-pycryptodome
 ```
 
+## Features
+- [x] RSA key generation
+- [x] ECC key generation
+- [x] RSA-OAEP with SHA256 encryption and decryption
+- [x] HMAC signing and verification
+- [x] RSA SSA pkcs1v15 signing and verification
+- [x] RSA PSS signing and verification
+- [x] ECC signing and verification
+- [ ] hack into the mainframe 😔
+
 ## usage
 It is a relatively simple command line tool. You can run `rsa_oaep` with `python3` or `python` with the `--help` flag to see the available options.
 
@@ -26,15 +36,44 @@ Or you can `chmod +x` the file and run it directly
     ./rsa_oaep --help
 ```
 
-Please do NOT try to run `rsa_oaep` on another directory, as saving keys will not work. The script will look for the `keys` directory in the same directory as the `rsa_oaep` script.
+> [!WARNING] 
+>
+> Use at your own risk! When downloading scripts from the internet, always check what it does first. If this somehow breaks your computer, I am not responsible.
+
+### Help
+
+```python
+$ ./rsa_oaep -h
+usage: rsa_oaep [-h] {ets,encrypt,decrypt,sign,verify,rsa_keygen,ecc_keygen} ...
+
+  /$$$$$$   /$$$$$$$  /$$$$$$           /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$
+ /$$__  $$ /$$_____/ |____  $$ /$$$$$$ /$$__  $$ |____  $$ /$$__  $$ /$$__  $$
+| $$  \__/|  $$$$$$   /$$$$$$$|______/| $$  \ $$  /$$$$$$$| $$$$$$$$| $$  \ $$
+| $$       \____  $$ /$$__  $$        | $$  | $$ /$$__  $$| $$_____/| $$  | $$
+| $$       /$$$$$$$/|  $$$$$$$        |  $$$$$$/|  $$$$$$$|  $$$$$$$| $$$$$$$/
+|__/      |_______/  \_______/         \______/  \_______/ \_______/| $$____/
+                                                                    | $$
+                                                                    |__/
+
+RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and verification tool
 
 
-## Features Quicklist 
-- [x] RSA key generation
-- [x] ECC key generation
-- [x] RSA-OAEP with SHA256 encryption and decryption
-- [x] HMAC signing and verification
-- [x] RSA SSA pkcs1v15 signing and verification
-- [x] RSA PSS signing and verification
-- [x] ECC signing and verification
-- [ ] hack into the mainframe 😔
+positional arguments:
+  {ets,encrypt,decrypt,sign,verify,rsa_keygen,ecc_keygen}
+                        available commands
+    ets                 Assumes that you already have generated encryption and signing keypairs: encrypt, then
+                        sign a message
+    encrypt             encrypt a message with RSA-OAEP
+    decrypt             decrypt an RSA-OAEP encrypted message
+    sign                sign a message with a digital signature
+    verify              verify a message with a digital signature
+    rsa_keygen          generate rsa keys
+    ecc_keygen          generate ecc keys
+```
+
+### Generating keys
+To generate an RSA encryption keypair, run the following command:
+
+```python
+
+```
