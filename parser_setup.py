@@ -102,7 +102,8 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
     )
 
     verify_parser.add_argument(
-        "-sc" "--scheme",
+        "-sc",
+        "--scheme",
         choices=["ECDSA", "RSA_PSS", "RSA_SSA", "HMAC"],
         required=True,
         help="digital signature scheme to be used in verification",
