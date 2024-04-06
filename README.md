@@ -128,6 +128,7 @@ reading public key...
 write ciphertext to file? [Y/n]:
 enter file name (default: cipher_text.raw):
 saving ciphertext...
+ciphertext saved!
 ```
 
 ### Signing a message
@@ -172,7 +173,7 @@ There is no stopping you from just skipping signing and verification. This was m
 - specifying the public and private key format
 - specifiying the pkcs standard to use for key generation
 - specifying a passphrase
-- specifying the RSA modulus bits [1024, {1648}, 2048, 3072]
+- specifying the RSA modulus bits [1024, *{1648}*, 2048, 3072]
 - specifiying the cipher and hash to be used for hardened `pkcs8` key derivation
 
 While hardening is not necessary, it is simply there to provide security. Regarding bit choices, the default is 1648 due to the [RFC 8017 standard](https://www.rfc-editor.org/rfc/rfc8017#section-7.1.1) which shows that:
@@ -181,11 +182,11 @@ While hardening is not necessary, it is simply there to provide security. Regard
 - `k` is the length in octets of the RSA modulus `n`
 - `hLen` is the length in octets of the hash function output
 
-*To get an `mLen` of 140, we use the formula to get a total of 1648 bits for `k`.*
+**To get an `mLen` of 140, we use the formula to get a total of 1648 bits for `k`.**
 
 ### ECC Key generation
 `rsa_oaep` provides several options regarding ECC key generation, such as:
-- specifying the curve to use [{p256}, p384, p521]
+- specifying the curve to use [*{p256}*, p384, p521]
 - specifying the public and private key format
 - specifying a passphrase
 - specifying the cipher and hash to be used for hardened key derivation
