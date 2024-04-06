@@ -35,7 +35,8 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
     encrypt_parser.add_argument(
         "-pb", "--pub_key", required=True, help="receiver public key file"
     )
-    encrypt_parser.add_argument("-m", "--msg", required=True, help="message to encrypt")
+    encrypt_parser.add_argument("-m", "--msg", help="message to encrypt")
+    encrypt_parser.add_argument("-f", "--filepath", help="filepath storing message")
 
     # -------------------------------- decrypt --------------------------------
 
