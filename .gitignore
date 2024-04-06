@@ -3,5 +3,6 @@
 *.der
 *.bin
 *.hex
+*.raw
 
 __pycache__/
