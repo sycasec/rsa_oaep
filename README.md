@@ -1,8 +1,5 @@
-# machine problem II: rsa-oaep encryption and decryption with signing
-
-## what?
-- RSA-OAEP encrypt then sign -> verify then decrypt
-- multiple signing methods
+# rsa_oaep
+Now you might think this is an API. It kind of is. It's all in the name. `rsa_oaep` is a cli-based RSA-OAEP encryption and decryption tool with signing and verification. It also supports four different signing methods. Signing, verification, encryption, and decryption are all separate `commands`, but since they are all isolated and have output files, they are expected to be used in a encrypt-then-sign and verify-then-decrypt manner. 
 
 ## installation
 Clone the repository first. Make sure you have `python3` and `PyCryptodome` installed. If you don't:
@@ -32,26 +29,12 @@ Or you can `chmod +x` the file and run it directly
 Please do NOT try to run `rsa_oaep` on another directory, as saving keys will not work. The script will look for the `keys` directory in the same directory as the `rsa_oaep` script.
 
 
-## Functions roadmap
+## Features Quicklist 
 - [x] RSA key generation
-- [x] RSA-OAEP encryption
-- [x] RSA-OAEP decryption
-- [x] HMAC signing
-- [x] HMAC verification
-- [x] RSA pkcs1v15 signing
-- [x] RSA pkcs1v15 verification
-- [x] RSA pss signing
-- [x] RSA pss verification
-- [ ] RSA-OAEP encrypt then sign -> verify then decrypt
-
-## Argparse roadmap
-- [x] RSA key generation
-- [x] RSA-OAEP encryption
-- [x] RSA-OAEP decryption
-- [x] HMAC signing
-- [x] HMAC verification 
-- [x] RSA pkcs1v15 signing 
-- [x] RSA pkcs1v15 verification
-- [x] RSA pss signing
-- [x] RSA pss verification
-- [ ] RSA-OAEP encrypt then sign -> verify then decrypt
+- [x] ECC key generation
+- [x] RSA-OAEP with SHA256 encryption and decryption
+- [x] HMAC signing and verification
+- [x] RSA SSA pkcs1v15 signing and verification
+- [x] RSA PSS signing and verification
+- [x] ECC signing and verification
+- [ ] hack into the mainframe 😔
