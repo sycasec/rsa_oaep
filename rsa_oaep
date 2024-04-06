@@ -133,8 +133,8 @@ def sign_helper(args):
                 else:
                     raise Exception("invalid scheme")
 
-                default_sig_fname = "./sig.bin"
-                sig_fname = input("enter signature filename (default: ./sig.bin): ")
+                default_sig_fname = "./sig.raw"
+                sig_fname = input("enter signature filename (default: ./sig.raw): ")
                 if sig_fname.strip():
                     default_sig_fname = sig_fname
 
@@ -161,8 +161,8 @@ def sign_helper(args):
                 print("signing message...")
                 signature = ECDSA_sign_message(key, ciphertext)
 
-                default_sig_fname = "./sig.bin"
-                sig_fname = input("enter signature filename (default: ./sig.bin): ")
+                default_sig_fname = "./sig.raw"
+                sig_fname = input("enter signature filename (default: ./sig.raw): ")
                 if sig_fname.strip():
                     default_sig_fname = sig_fname
 
@@ -314,14 +314,25 @@ def verify_helper(args):
 
 
 def encrypt_helper(args):
+    if args.msg and args.filepath:
+        print("cannot supply both a message and a file")
+        exit(1)
     try:
         print("reading public key...")
         pub_key = RSA.import_key(open(args.pub_key).read())
-        ciphertext = encrypt_message(pub_key, args.msg)
+        if args.msg:
+            ciphertext = encrypt_message(pub_key, args.msg)
+        elif args.filepath:
+            with open(args.filepath, "rt") as infile:
+                message = infile.read()
+            ciphertext = encrypt_message(pub_key, message)
+        else:
+            print("no message supplied")
+            exit(1)
         save = input("write ciphertext to file? [Y/n]: ")
         if save.strip().lower() not in ["n", "no"] or save == "":
-            fname = "cipher_text.bin"
-            n_fname = input("enter file name (default: cipher_text.bin): ")
+            fname = "cipher_text.raw"
+            n_fname = input("enter file name (default: cipher_text.raw): ")
             if n_fname.strip():
                 fname = n_fname
 
