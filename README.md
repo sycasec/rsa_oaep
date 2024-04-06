@@ -42,7 +42,7 @@ Or you can `chmod +x` the file and run it directly
 
 ### Help
 
-```python
+```bash
 $ ./rsa_oaep -h
 usage: rsa_oaep [-h] {ets,encrypt,decrypt,sign,verify,rsa_keygen,ecc_keygen} ...
 
