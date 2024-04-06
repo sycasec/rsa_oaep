@@ -162,7 +162,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
         "--pk_format",
         choices=["PEM", "DER"],
         default="DER",
-        help="output format for private key",
+        help="output format for private key (default is DER)",
     )
 
     rsa_keygen_parser.add_argument(
@@ -170,7 +170,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
         "--pb_format",
         choices=["PEM", "DER", "OpenSSH"],
         default="PEM",
-        help="output format for public key",
+        help="output format for public key (default is PEM)",
     )
 
     rsa_keygen_parser.add_argument(
@@ -179,9 +179,9 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
     rsa_keygen_parser.add_argument(
         "-b",
         "--bits",
-        choices=[1024, 2048, 3072],
-        default=2048,
-        help="key size in bits",
+        choices=[1024, 1642, 2048, 3072],
+        default=1642,
+        help="key size in bits, (default is 1642)",
         type=int,
     )
 
@@ -198,7 +198,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
             "DES-EDE3-CBC",
         ],
         default="AES256-CBC",
-        help="cipher for pkcs#8 private key derivation",
+        help="cipher for pkcs#8 private key derivation, (default is AES256-CBC)",
     )
 
     rsa_keygen_parser.add_argument(
@@ -214,7 +214,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
             "SHA3-512",
         ],
         default="SHA512",
-        help="hash for pkcs#8 private key derivation",
+        help="hash for pkcs#8 private key derivation, (default is SHA512)",
     )
 
     # --------------------------------- ecc keygen ---------------------------------
@@ -237,7 +237,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
         "--pk_format",
         choices=["PEM", "DER", "raw"],
         default="DER",
-        help="output format for private key",
+        help="output format for private key (default is DER)",
     )
 
     ecc_keygen_parser.add_argument(
@@ -245,7 +245,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
         "--pb_format",
         choices=["PEM", "DER", "OpenSSH" "SEC1", "raw"],
         default="PEM",
-        help="output format for public key",
+        help="output format for public key (default is PEM)",
     )
 
     ecc_keygen_parser.add_argument(
@@ -261,7 +261,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
             "DES-EDE3-CBC",
         ],
         default="AES256-CBC",
-        help="cipher for pkcs#8 private key derivation",
+        help="cipher for pkcs#8 private key derivation (default is AES256-CBC)",
     )
 
     ecc_keygen_parser.add_argument(
@@ -277,7 +277,7 @@ RSA-OAEP encryption and decryption + RSS (PSS, SSA), ECDSA, and HMAC signing and
             "SHA3-512",
         ],
         default="SHA512",
-        help="hash for pkcs#8 private key derivation",
+        help="hash for pkcs#8 private key derivation (default is SHA512)",
     )
 
     return parser
