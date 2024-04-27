@@ -97,7 +97,7 @@ To encrypt a message, you need a reciever public key. For demonstration, we will
 
 But first, let's use a 140 character message.
 ```bash
-echo -n "Hello, this is a 140 character message. There is definitely no context to be taken from this message other than that it has 140 characters." > message.txt
+echo -n "Hello, this is a 140 character message. There is definitely no context contained within this message, other than that it has 140 characters." > message.txt
 ```
 
 We can confirm this with the following commands:
@@ -108,11 +108,11 @@ $ xxd message.txt
 00000000: 4865 6c6c 6f2c 2074 6869 7320 6973 2061  Hello, this is a
 00000010: 2031 3430 2063 6861 7261 6374 6572 206d   140 character m
 00000020: 6573 7361 6765 2e20 5468 6572 6520 6973  essage. There is
-00000030: 206e 6f20 636f 6e74 6578 7420 636f 6e74   no context cont
-00000040: 6169 6e65 6420 746f 2074 6869 7320 6d65  ained to this me
-00000050: 7373 6167 6520 6f74 6865 7220 7468 616e  ssage other than
-00000060: 2074 6861 7420 6974 2063 6f6e 7461 696e   that it contain
-00000070: 7320 6120 746f 7461 6c20 6f66 2031 3430  s a total of 140
+00000030: 2064 6566 696e 6974 656c 7920 6e6f 2063   definitely no c
+00000040: 6f6e 7465 7874 2063 6f6e 7461 696e 6564  ontext contained
+00000050: 2077 6974 6869 6e20 7468 6973 206d 6573   within this mes
+00000060: 7361 6765 2c20 6f74 6865 7220 7468 616e  sage, other than
+00000070: 2074 6861 7420 6974 2068 6173 2031 3430   that it has 140
 00000080: 2063 6861 7261 6374 6572 732e             characters.
 ```
 
